@@ -3,12 +3,12 @@
 FROM eclipse-temurin:17-jdk AS build-java
 WORKDIR /work
 # 複製 Gradle wrapper 與設定（包含離線 ZIP）
-COPY ./agent-api-relay/gradlew ./
-COPY ./agent-api-relay/build.gradle ./
-COPY ./agent-api-relay/settings.gradle ./
-COPY ./agent-api-relay/gradle ./gradle
+COPY ./moda-agent-api-relay/gradlew ./
+COPY ./moda-agent-api-relay/build.gradle ./
+COPY ./moda-agent-api-relay/settings.gradle ./
+COPY ./moda-agent-api-relay/gradle ./gradle
 # 複製原始碼
-COPY ./agent-api-relay/src ./src
+COPY ./moda-agent-api-relay/src ./src
 
 RUN chmod +x ./gradlew
 # 使用 offline build（因為 ZIP 已經在本地）
@@ -38,8 +38,8 @@ ENV PATH=$CONDA_DIR/bin:$PATH
 
 # 複製 Conda 環境設定檔並建立環境
 WORKDIR /app
-COPY ./doctor_agent/environment.yml ./environment.yml
-COPY ./doctor_agent/poc_easyocr/ocr_env.yml ./ocr_env.yml
+COPY ./moda-agent/environment.yml ./environment.yml
+COPY ./moda-agent/poc_easyocr/ocr_env.yml ./ocr_env.yml
 
 # 【修正 1】：整合環境建立與 NumPy 修復，確保這是一個連續的 RUN 指令
 RUN conda config --set always_yes yes && \
@@ -57,8 +57,8 @@ RUN conda run -n ocr_env pip install torch torchvision --index-url https://downl
 COPY --from=build-java /work/build/libs/*.jar ./app.jar
 
 # 複製 Python 專案的程式碼及啟動腳本
-COPY ./doctor_agent /app/moda_agent
-COPY agent-api-relay/entrypoint.sh .
+COPY ./moda-agent /app/moda_agent
+COPY moda-agent-api-relay/entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
 EXPOSE 8080 5000
