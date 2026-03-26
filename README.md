@@ -72,7 +72,7 @@ networks:
 
 3. 存檔後，在終端機執行 `docker compose up -d`，Docker 即會自動套用新設定並重啟該服務。
 
-### 📜 Entrypoint 腳本設定 (`modea-agent-api-relay/entrypoint.sh`)
+### 📜 Entrypoint 腳本設定 (`moda-agent-api-relay/entrypoint.sh`)
 
 為確保上述的環境變數能順利生效，請確認你的啟動腳本具備讀取變數的能力。內容應包含如下設計（使用 `${變數名稱:-預設值}` 語法）：
 
